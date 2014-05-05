@@ -74,7 +74,7 @@ require([
       var xAxis = stickThreshold(gamepad.axes[0]);
       var yAxis = stickThreshold(gamepad.axes[1]);
 
-      var y2Axis = stickThreshold(gamepad.axes[3]);
+      var y2Axis = -stickThreshold(gamepad.axes[3]);
 
       this.zoom += y2Axis / 20;
       this.zoom = Math.min(Math.max(this.zoom, 0.5), 3);
