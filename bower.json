@@ -1,0 +1,29 @@
+{
+  "name": "webgl_tiles",
+  "version": "0.0.0",
+  "description": "Demonstrates tile maps using fragment shaders.",
+  "main": "index.html",
+  "keywords": [
+    "webgl",
+    "tiles"
+  ],
+  "authors": [
+    "Michael Hays"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "~2.1.11",
+    "prefixfree": "*",
+    "lodash": "~2.4.1",
+    "gl-matrix": "~2.2.1",
+    "stats.js": "*"
+  }
+}
