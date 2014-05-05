@@ -34,13 +34,14 @@ require([
 
     this.tileMap = new TileMap(gl);
 
+    this.x = this.y = 0;
+    this.zoom = 1;
+    this.maxVelocity = 2 * this.zoom;
+
     this.tileMap.setSpriteSheet("assets/FFIOriginsMap1_2.png");
     this.tileMap.describeTileLayer(tiles, 0, 0.6, 0.6);
     this.tileMap.tileSize = 16;
-    this.tileMap.setTileScale(3);
-
-    this.x = this.y = 0;
-    this.maxVelocity = 5;
+    this.tileMap.setTileScale(this.zoom);
   };
 
   Renderer.prototype.resize = function (gl, canvas) {
@@ -72,6 +73,15 @@ require([
     if (gamepad) {
       var xAxis = stickThreshold(gamepad.axes[0]);
       var yAxis = stickThreshold(gamepad.axes[1]);
+
+      var y2Axis = stickThreshold(gamepad.axes[3]);
+
+      this.zoom += y2Axis / 20;
+      this.zoom = Math.min(Math.max(this.zoom, 0.5), 3);
+      this.maxVelocity = 5 * this.zoom;
+
+      this.tileMap.setTileScale(this.zoom);
+
       this.x += xAxis * this.maxVelocity;
       this.y += yAxis * this.maxVelocity;
     }
