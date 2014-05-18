@@ -75,6 +75,7 @@ define([
     "   else {",
     "     vec2 spriteOffset = floor((tile.xy) * 256.0) * tileSize;",
     "     vec2 spriteCoord = mod(pixelCoord, tileSize);",
+    //"     gl_FragColor = tile;",
     "     gl_FragColor = texture2D(sprites, (spriteOffset + spriteCoord) * inverseSpriteTextureSize);",
     "   }",
     "}"
@@ -87,46 +88,11 @@ define([
     this.inverseTextureSize = glMatrix.vec2.create();
   };
 
-  TileMapLayer.prototype.describeTexture = function(gl, description) {
-
-    var layer = description.layers[0];
-    var tiles = layer.data;
-    var width = layer.width;
-
-    var canvas = document.createElement("CANVAS");
-    canvas.height = layer.height;
-    canvas.width = layer.width;
-
-    var ctx = canvas.getContext('2d');
-
-    var imgData = ctx.createImageData(
-        width, Math.floor(tiles.length / width)
-    );
-
-    var loop;
-    for (loop = 0; loop < tiles.length; loop++) {
-      // Tile index is 1-based, so fix that.
-      var tileIndex = tiles[loop] - 1;
-
-      imgData.data[loop*4] = tileIndex % description.numTilesPerRow;
-      imgData.data[loop*4 + 1] = Math.floor(tileIndex / description.numTilesPerRow);
-      imgData.data[loop*4 + 2] = 0;
-      imgData.data[loop*4 + 3] = 255;
-    }
-    ctx.putImageData(imgData, 0, 0);
-
-    console.log(canvas.toDataURL());
-    this.setTexture(gl, canvas.toDataURL())
-  };
-
   TileMapLayer.prototype.setTexture = function(gl, src, repeat) {
     var self = this;
     var image = new Image();
     image.addEventListener("load", function() {
-
-      var poo = {image: image};
-      console.log(poo);
-
+      console.log(image.width, image.height);
       gl.bindTexture(gl.TEXTURE_2D, self.tileTexture);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
 
@@ -287,7 +253,7 @@ define([
 
     // Draw each layer of the map
     var i, layer;
-    for(i = this.layers.length; i >= 0; --i) {
+    for(i = this.layers.length - 1; i >= 0; --i) {
       layer = this.layers[i];
       if(layer) {
         gl.uniform2f(shader.uniform.viewOffset, Math.floor(x * this.tileScale * layer.scrollScaleX), Math.floor(y * this.tileScale * layer.scrollScaleY));
@@ -300,5 +266,8 @@ define([
     }
   };
 
-  return TileMap;
+  return {
+    TileMap: TileMap,
+    TileMapLayer: TileMapLayer
+  };
 });

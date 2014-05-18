@@ -115,7 +115,7 @@ define([
   };
 
   GLContextHelper.prototype.windowResized = function(force) {
-    if(this.lastWidth === window.innerWidth && !force) { return; }
+    // if(this.lastWidth === window.innerWidth && !force) { return; }
 
     var canvas = this.canvas;
 
