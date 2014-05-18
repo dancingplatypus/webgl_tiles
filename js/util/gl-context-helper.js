@@ -116,7 +116,7 @@ define([
 
   GLContextHelper.prototype.windowResized = function(force) {
     // if(this.lastWidth === window.innerWidth && !force) { return; }
-
+console.log('blow');
     var canvas = this.canvas;
 
     // We'll consider "mobile" and "screen deprived" to be the same thing :)

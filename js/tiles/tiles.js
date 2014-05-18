@@ -86,13 +86,14 @@ define([
     this.scrollScaleY = 1;
     this.tileTexture = gl.createTexture();
     this.inverseTextureSize = glMatrix.vec2.create();
+    this.gl = null;
   };
 
-  TileMapLayer.prototype.setTexture = function(gl, src, repeat) {
+  TileMapLayer.prototype.setTexture = function(gl, src, repeat, done) {
     var self = this;
+    self.gl = gl;
     var image = new Image();
     image.addEventListener("load", function() {
-      console.log(image.width, image.height);
       gl.bindTexture(gl.TEXTURE_2D, self.tileTexture);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
 
@@ -109,6 +110,19 @@ define([
       }
       self.inverseTextureSize[0] = 1/image.width;
       self.inverseTextureSize[1] = 1/image.height;
+      done();
+    });
+    image.src = src;
+  };
+
+  TileMapLayer.prototype.update = function(src, done) {
+    var self = this;
+    var gl = self.gl;
+    var image = new Image();
+    image.addEventListener("load", function() {
+      gl.bindTexture(gl.TEXTURE_2D, self.tileTexture);
+      gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, gl.RGBA, gl.UNSIGNED_BYTE, image);
+      if (done) { done(); }
     });
     image.src = src;
   };
@@ -197,22 +211,31 @@ define([
     image.src = src;
   };
 
-  TileMap.prototype.setTileLayer = function(src, layerId, scrollScaleX, scrollScaleY) {
+  TileMap.prototype.setTileLayer = function(src, layerId, scrollScaleX, scrollScaleY, done) {
     var layer = new TileMapLayer(this.gl);
-    layer.setTexture(this.gl, src);
-    if(scrollScaleX) {
-      layer.scrollScaleX = scrollScaleX;
-    }
-    if(scrollScaleY) {
-      layer.scrollScaleY = scrollScaleY;
-    }
+    var self = this;
+    layer.setTexture(this.gl, src, false, function() {
+      if(scrollScaleX) {
+        layer.scrollScaleX = scrollScaleX;
+      }
+      if(scrollScaleY) {
+        layer.scrollScaleY = scrollScaleY;
+      }
+      self.layers[layerId] = layer;
+      if (done) { done(); }
+    });
+  };
 
-    this.layers[layerId] = layer;
+  TileMap.prototype.updateTileLayer = function(src, layerId, scrollScaleX, scrollScaleY, done) {
+    if (!this.layers[layerId]) {
+      this.setTileLayer(src, layerId, scrollScaleX, scrollScaleY, done);
+    } else {
+      this.layers[layerId].update(src, done);
+    }
   };
 
   TileMap.prototype.describeTileLayer = function(description, layerId, scrollScaleX, scrollScaleY) {
     var layer = new TileMapLayer(this.gl);
-    layer.describeTexture(this.gl, description);
     if(scrollScaleX) {
       layer.scrollScaleX = scrollScaleX;
     }

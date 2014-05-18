@@ -7,7 +7,8 @@ var require = {
     Voronoi: {exports: 'Voronoi'},
     QuadTree: {exports: 'QuadTree'},
     perlinSimplex: {exports: 'PerlinSimplex'},
-    perlinClassical: {exports: 'Perlin'}
+    perlinClassical: {exports: 'Perlin'},
+    prng: {exports: 'Prng'}
   },
 
   paths: {
@@ -21,6 +22,7 @@ var require = {
     QuadTree: '../lib/QuadTree',
     Voronoi: '../lib/rhill-voronoi-core',
     perlinSimplex: '../lib/perlin/PerlinSimplex',
-    perlinClassical: '../lib/perlin/Perlin'
+    perlinClassical: '../lib/perlin/Perlin',
+    prng: '../lib/perlin/base'
   }
 };
