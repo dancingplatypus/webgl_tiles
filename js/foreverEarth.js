@@ -19,8 +19,8 @@ require([
     mapWidth: function() { return data.tileWidth * data.tilesX; },
     mapHeight: function() { return data.tileHeight * data.tilesY; },
 
-    tilesX: 1000,
-    tilesY: 1000,
+    tilesX: 300,
+    tilesY: 300,
     siteDensity: .01,
 
     perlinFrequency: 0.01,
@@ -307,15 +307,16 @@ require([
         var shiftMap;
 
         if (okToOffsetCheck) {
-          if (scene.centerX() > (1 - scene.mapSwapThreshold) * scene.mapWidth()) {
+
+          if (scene.x > (1 - scene.mapSwapThreshold) * scene.mapWidth() - 3 * scene.viewportWidth()) {
             okToOffsetCheck = false;
             shiftMap = Math.floor((data.tilesX / 2) - scene.mapSwapThreshold * data.tilesX);
             apply(shiftMap, 0, function () {
               scene.x -= shiftMap * data.tileWidth / scene.zoom;
               okToOffsetCheck = true;
             });
-          }
-          if (scene.centerX() < (scene.mapSwapThreshold) * scene.mapWidth()) {
+          } else
+          if (scene.x < (scene.mapSwapThreshold) * scene.mapWidth()) {
             okToOffsetCheck = false;
             shiftMap = Math.floor((data.tilesX / 2) - scene.mapSwapThreshold * data.tilesX);
             apply(-shiftMap, 0, function () {
@@ -323,15 +324,15 @@ require([
               okToOffsetCheck = true;
             });
           }
-          if (scene.centerY() > (1 - scene.mapSwapThreshold) * scene.mapHeight()) {
+          if (scene.y > (1 - scene.mapSwapThreshold) * scene.mapHeight() - 2 * scene.viewportHeight()) {
             okToOffsetCheck = false;
             shiftMap = Math.floor((data.tilesY / 2) - scene.mapSwapThreshold * data.tilesY);
             apply(0, shiftMap, function () {
               scene.y -= shiftMap * data.tileHeight / scene.zoom;
               okToOffsetCheck = true;
             });
-          }
-          if (scene.centerY() < (scene.mapSwapThreshold) * scene.mapHeight()) {
+          } else
+          if (scene.y < (scene.mapSwapThreshold) * scene.mapHeight()) {
             okToOffsetCheck = false;
             shiftMap = Math.floor((data.tilesY / 2) - scene.mapSwapThreshold * data.tilesY);
             apply(0, -shiftMap, function () {
