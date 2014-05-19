@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Web Gl Tiles</title>
+  <link rel="stylesheet" href="css/index.css"/>
+  <!-- TODO(mhays): requireJS is built for this sort of thing. Use it. -->
+  <script src="js/config.js"></script>
+  <script data-main="js/foreverEarth" src="bower_components/requirejs/require.js"></script>
+  <style>
+    #title {
+      position:fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      text-align: center;
+      font-size: 50px;
+      line-height: 70px;
+      background-color: rgba(0,0,0,0.6);
+      color: rgb(132, 200, 195);
+      z-index: 100;
+    }
+    #webgl-canvas {
+      position: fixed;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="content-frame">
+    <div id="canvas-container">
+      <canvas id="webgl-canvas"></canvas>
+    </div>
+    <div id="controls-container" class="content-column">
+    </div>
+  </div>
+  <div id="title">Forever Earth</div>
+</body>
+</html>
