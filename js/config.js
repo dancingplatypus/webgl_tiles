@@ -23,6 +23,7 @@ var require = {
     Voronoi: '../lib/rhill-voronoi-core',
     perlinSimplex: '../lib/perlin/PerlinSimplex',
     perlinClassical: '../lib/perlin/Perlin',
-    prng: '../lib/perlin/base'
+    prng: '../lib/perlin/base',
+    text: '../bower_components/requirejs-text/text'
   }
 };

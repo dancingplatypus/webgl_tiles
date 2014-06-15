@@ -28,58 +28,10 @@
  * to the rendered scene.
  */
 define([
-  "util/gl-util",
-  "glMatrix"
-], function (GLUtil, glMatrix) {
-
-  // Shader
-  var tilemapVS = [
-    "precision mediump float;",
-
-    "attribute vec2 position;",
-    "attribute vec2 texture;",
-
-    "varying vec2 pixelCoord;",
-    "varying vec2 texCoord;",
-
-    "uniform vec2 viewOffset;",
-    "uniform vec2 viewportSize;",
-    "uniform vec2 inverseTileTextureSize;",
-    "uniform float inverseTileSize;",
-
-    "void main(void) {",
-    "   pixelCoord = (texture * viewportSize) + viewOffset;",
-    "   texCoord = pixelCoord * inverseTileTextureSize * inverseTileSize;",
-    "   gl_Position = vec4(position, 0.0, 1.0);",
-    "}"
-  ].join("\n");
-
-  var tilemapFS = [
-    "precision mediump float;",
-
-    "varying vec2 pixelCoord;",
-    "varying vec2 texCoord;",
-
-    "uniform sampler2D tiles;",
-    "uniform sampler2D sprites;",
-
-    "uniform vec2 inverseTileTextureSize;",
-    "uniform vec2 inverseSpriteTextureSize;",
-    "uniform float tileSize;",
-
-    "void main(void) {",
-    "   vec4 tile = texture2D(tiles, texCoord);",
-    "   if(tile.x == 1.0 && tile.y == 1.0) {",
-    "     discard;",
-    "   }",
-    "   else {",
-    "     vec2 spriteOffset = floor((tile.xy) * 256.0) * tileSize;",
-    "     vec2 spriteCoord = mod(pixelCoord, tileSize);",
-    //"     gl_FragColor = tile;",
-    "     gl_FragColor = texture2D(sprites, (spriteOffset + spriteCoord) * inverseSpriteTextureSize);",
-    "   }",
-    "}"
-  ].join("\n");
+  'util/gl-util', 'glMatrix',
+  'text!shaders/v_tilemap.glsl',
+  'text!shaders/f_tilemap.glsl'
+], function (GLUtil, glMatrix, tilemapVS, tilemapFS) {
 
   var TileMapLayer = function(gl) {
     this.scrollScaleX = 1;

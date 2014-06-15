@@ -24,6 +24,7 @@
     "prefixfree": "*",
     "lodash": "~2.4.1",
     "gl-matrix": "~2.2.1",
-    "stats.js": "*"
+    "stats.js": "*",
+    "requirejs-text": "~2.0.12"
   }
 }
